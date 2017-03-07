@@ -18,7 +18,7 @@ suite('part2 routes', () => {
       });
   });
 
-  before((done) => {
+  beforeEach((done) => {
     knex.seed.run()
       .then(() => {
         done();
