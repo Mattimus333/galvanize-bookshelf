@@ -14,4 +14,22 @@ ROUTER.get('/books', (req, res) => {
   });
 });
 
+// ROUTER.post('/books', (req, res) => {
+//   const BOOK = {
+//     title: req.body.title,
+//     author: req.body.author,
+//     genre: req.body.genre,
+//     description: req.body.description,
+//     cover_url: req.body.cover_url,
+//   };
+//   knex('books')
+//   .insert(BOOK)
+//   .then(() => {
+//     res.status(200).json(BOOK);
+//   })
+//   .catch((err) => {
+//     res.status(500);
+//   });
+// });
+
 module.exports = ROUTER;
