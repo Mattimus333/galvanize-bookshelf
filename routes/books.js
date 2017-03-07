@@ -33,7 +33,7 @@ ROUTER.post('/books', (req, res) => {
     author: req.body.author,
     genre: req.body.genre,
     description: req.body.description,
-    cover_url: req.body.coverUrl,
+    cover_url: req.body.coverUrl
   };
   knex('books')
   .insert(BOOK)
@@ -46,6 +46,26 @@ ROUTER.post('/books', (req, res) => {
     .catch((err) => {
       res.send(401);
     });
+  })
+  .catch((err) => {
+    res.send(401);
+  });
+});
+
+ROUTER.patch('/books/:id', (req, res) => {
+  const BOOK = {
+    title: req.body.title,
+    author: req.body.author,
+    genre: req.body.genre,
+    description: req.body.description,
+    cover_url: req.body.coverUrl
+  };
+  knex('books')
+  .where('id', '=', req.params.id)
+  .update(BOOK)
+  .then(() => {
+    BOOK.id = parseInt(req.params.id);
+    res.status(200).json(HUMPS.camelizeKeys(BOOK));
   })
   .catch((err) => {
     res.send(401);
