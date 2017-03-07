@@ -72,4 +72,26 @@ ROUTER.patch('/books/:id', (req, res) => {
   });
 });
 
+ROUTER.delete('/books/:id', (req, res) => {
+  let deletedBook;
+  knex('books')
+  .select('title', 'author', 'genre', 'description', 'cover_url')
+  .where('id', '=', req.params.id)
+  .then((book) =>{
+    deletedBook = book;
+  })
+  .catch((err) => {
+    res.send(401);
+  });
+  knex('books')
+  .where('id', '=', req.params.id)
+  .del()
+  .then((book) =>{
+    res.status(200).json(HUMPS.camelizeKeys(deletedBook[0]));
+  })
+  .catch((err) => {
+    res.send(401);
+  });
+});
+
 module.exports = ROUTER;
