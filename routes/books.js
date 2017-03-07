@@ -1,10 +1,17 @@
-'use strict';
-
-const express = require('express');
-
+const EXPRESS = require('express');
 // eslint-disable-next-line new-cap
-const router = express.Router();
+const ROUTER = EXPRESS.Router();
+const HUMPS = require('humps');
+const ENV = process.env.NODE_ENV || 'development';
+const CONFIG = require('../knexfile.js')[ENV];
+const knex = require('knex')(CONFIG);
 
-// YOUR CODE HERE
+ROUTER.get('/books', (req, res) => {
+  knex('books').orderBy('title').then((books) => {
+    res.status(200).json(HUMPS.camelizeKeys(books));
+  }).catch((err) => {
+    res.status(500);
+  });
+});
 
-module.exports = router;
+module.exports = ROUTER;
