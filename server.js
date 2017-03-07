@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 
   res.sendStatus(406);
 });
+// commented out so I can test with postman because tests are fucked.
 
 const books = require('./routes/books');
 const favorites = require('./routes/favorites');

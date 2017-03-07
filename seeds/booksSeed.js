@@ -6,7 +6,6 @@ exports.seed = function (knex, Promise) {
     .then(() => {
       return (knex('books').insert(
                  [{
-                   id: 1,
                    title: 'JavaScript, The Good Parts',
                    author: 'Douglas Crockford',
                    genre: 'JavaScript',
@@ -15,7 +14,6 @@ exports.seed = function (knex, Promise) {
                    created_at: new Date('2016-06-26 14:26:16 UTC'),
                    updated_at: new Date('2016-06-26 14:26:16 UTC'),
                  }, {
-                   id: 2,
                    title: 'Learning React Native',
                    author: 'Bonnie Eisenman',
                    genre: 'React',
@@ -24,7 +22,6 @@ exports.seed = function (knex, Promise) {
                    created_at: new Date('2016-06-26 14:26:16 UTC'),
                    updated_at: new Date('2016-06-26 14:26:16 UTC'),
                  }, {
-                   id: 3,
                    title: 'Functional JavaScript',
                    author: 'Michael Fogus',
                    genre: 'JavaScript',
@@ -33,7 +30,6 @@ exports.seed = function (knex, Promise) {
                    created_at: new Date('2016-06-26 14:26:16 UTC'),
                    updated_at: new Date('2016-06-26 14:26:16 UTC'),
                  }, {
-                   id: 4,
                    title: 'React: Up & Running',
                    author: 'Stoyan Stefanov',
                    genre: 'React',
@@ -42,7 +38,6 @@ exports.seed = function (knex, Promise) {
                    created_at: new Date('2016-06-26 14:26:16 UTC'),
                    updated_at: new Date('2016-06-26 14:26:16 UTC'),
                  }, {
-                   id: 5,
                    title: 'Learning JavaScript Design Patterns',
                    author: 'Addy Osmani',
                    genre: 'JavaScript',
@@ -51,7 +46,6 @@ exports.seed = function (knex, Promise) {
                    created_at: new Date('2016-06-26 14:26:16 UTC'),
                    updated_at: new Date('2016-06-26 14:26:16 UTC'),
                  }, {
-                   id: 6,
                    title: 'JavaScript with Promises',
                    author: 'Daniel Parker',
                    genre: 'JavaScript',
@@ -60,7 +54,6 @@ exports.seed = function (knex, Promise) {
                    created_at: new Date('2016-06-26 14:26:16 UTC'),
                    updated_at: new Date('2016-06-26 14:26:16 UTC'),
                  }, {
-                   id: 7,
                    title: 'AngularJS: Up and Running',
                    author: 'Shyam Seshadri',
                    genre: 'Angular',
@@ -69,7 +62,6 @@ exports.seed = function (knex, Promise) {
                    created_at: new Date('2016-06-26 14:26:16 UTC'),
                    updated_at: new Date('2016-06-26 14:26:16 UTC'),
                  }, {
-                   id: 8,
                    title: 'Web Development with Node and Express',
                    author: 'Ethan Brown',
                    genre: 'Node',
