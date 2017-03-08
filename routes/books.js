@@ -36,16 +36,9 @@ ROUTER.post('/books', (req, res) => {
     cover_url: req.body.coverUrl
   };
   knex('books')
-  .insert(BOOK)
-  .then(() => {
-    knex('books')
-    .where('title', '=', BOOK.title)
-    .then((book) => {
-      res.status(200).json(HUMPS.camelizeKeys(book[0]));
-    })
-    .catch((err) => {
-      res.send(401);
-    });
+  .insert(BOOK, '*')
+  .then((book) => {
+    res.status(200).json(HUMPS.camelizeKeys(book[0]));
   })
   .catch((err) => {
     res.send(401);
