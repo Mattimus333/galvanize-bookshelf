@@ -28,7 +28,7 @@ ROUTER.get('/books/:id', (req, res) => {
 });
 
 ROUTER.post('/books', (req, res) => {
-  const BOOK = {
+  const book = {
     title: req.body.title,
     author: req.body.author,
     genre: req.body.genre,
@@ -36,7 +36,7 @@ ROUTER.post('/books', (req, res) => {
     cover_url: req.body.coverUrl,
   };
   knex('books')
-  .insert(BOOK, '*')
+  .insert(book, '*')
   .then((book) => {
     res.status(200).json(HUMPS.camelizeKeys(book[0]));
   })
