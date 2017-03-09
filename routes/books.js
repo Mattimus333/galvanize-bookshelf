@@ -1,33 +1,33 @@
-const EXPRESS = require('express');
+const express = require('express');
 // eslint-disable-next-line new-cap
-const ROUTER = EXPRESS.Router();
-const HUMPS = require('humps');
-const ENV = process.env.NODE_ENV || 'development';
-const CONFIG = require('../knexfile.js')[ENV];
-const knex = require('knex')(CONFIG);
+const router = express.Router();
+const humps = require('humps');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[env];
+const knex = require('knex')(config);
 
-ROUTER.get('/books', (req, res) => {
+router.get('/books', (req, res) => {
   knex('books')
   .orderBy('title')
   .then((books) => {
-    res.status(200).json(HUMPS.camelizeKeys(books));
+    res.status(200).json(humps.camelizeKeys(books));
   }).catch((err) => {
     res.status(500);
   });
 });
 
-ROUTER.get('/books/:id', (req, res) => {
+router.get('/books/:id', (req, res) => {
   knex('books')
   .where('id', '=', req.params.id)
   .then((book) => {
-    res.status(200).json(HUMPS.camelizeKeys(book[0]));
+    res.status(200).json(humps.camelizeKeys(book[0]));
   })
   .catch((err) => {
     res.status(500);
   });
 });
 
-ROUTER.post('/books', (req, res) => {
+router.post('/books', (req, res) => {
   const book = {
     title: req.body.title,
     author: req.body.author,
@@ -38,14 +38,14 @@ ROUTER.post('/books', (req, res) => {
   knex('books')
   .insert(book, '*')
   .then((book) => {
-    res.status(200).json(HUMPS.camelizeKeys(book[0]));
+    res.status(200).json(humps.camelizeKeys(book[0]));
   })
   .catch((err) => {
     res.send(401, err);
   });
 });
 
-ROUTER.patch('/books/:id', (req, res) => {
+router.patch('/books/:id', (req, res) => {
   const BOOK = {
     title: req.body.title,
     author: req.body.author,
@@ -58,14 +58,14 @@ ROUTER.patch('/books/:id', (req, res) => {
   .update(BOOK)
   .then(() => {
     BOOK.id = parseInt(req.params.id, 10);
-    res.status(200).json(HUMPS.camelizeKeys(BOOK));
+    res.status(200).json(humps.camelizeKeys(BOOK));
   })
   .catch((err) => {
     res.send(401, err);
   });
 });
 
-ROUTER.delete('/books/:id', (req, res) => {
+router.delete('/books/:id', (req, res) => {
   let deletedBook;
   knex('books')
   .select('title', 'author', 'genre', 'description', 'cover_url')
@@ -80,11 +80,11 @@ ROUTER.delete('/books/:id', (req, res) => {
   .where('id', '=', req.params.id)
   .del()
   .then((book) =>{
-    res.status(200).json(HUMPS.camelizeKeys(deletedBook[0]));
+    res.status(200).json(humps.camelizeKeys(deletedBook[0]));
   })
   .catch((err) => {
     res.send(401);
   });
 });
 
-module.exports = ROUTER;
+module.exports = router;
