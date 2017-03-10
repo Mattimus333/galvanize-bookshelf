@@ -63,7 +63,10 @@ router.post('/token', (req, res) => {
   });
 });
 
-// router.delete('/token', (req, res) => {
-//
-// })
+router.delete('/token', (req, res) => {
+  const token = '';
+  res.cookie('token', token);
+  res.status(200).send();
+});
+
 module.exports = router;
