@@ -73,8 +73,8 @@ router.delete('/books/:id', (req, res) => {
   .then((book) =>{
     deletedBook = book;
   })
-  .catch((err) => {
-    res.send(401);
+  .catch(() => {
+    res.status(400);
   });
   knex('books')
   .where('id', '=', req.params.id)
@@ -82,8 +82,8 @@ router.delete('/books/:id', (req, res) => {
   .then((book) =>{
     res.status(200).json(humps.camelizeKeys(deletedBook[0]));
   })
-  .catch((err) => {
-    res.send(401);
+  .catch(() => {
+    res.status(400);
   });
 });
 

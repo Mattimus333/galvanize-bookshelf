@@ -18,8 +18,8 @@ router.get('/favorites', (req, res) => {
       .then((favorites) => {
         res.status(200).send(humps.camelizeKeys(favorites));
       })
-      .catch((err) => {
-        res.status(500);
+      .catch(() => {
+        res.status(400);
       });
     }
   });
@@ -40,10 +40,61 @@ router.get('/favorites/check', (req, res) => {
         res.status(200).send(true);
       })
       .catch(() => {
-        res.status(500);
+        res.status(400);
       });
     }
   });
-})
+});
+
+router.post('/favorites', (req, res) => {
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
+    if (err) {
+      res.status(401).set('Content-Type', 'text/plain').send('Unauthorized');
+    } else {
+      const favoriteBook = {
+        book_id: req.body.bookId,
+        user_id: payload.userId,
+      }
+      knex('favorites')
+      .insert(favoriteBook, '*')
+      .then((fav) => {
+        delete fav[0].created_at;
+        delete fav[0].updated_at;
+        res.status(200).send(humps.camelizeKeys(fav[0]));
+      })
+      .catch(() => {
+        res.status(400);
+      });
+    }
+  });
+});
+
+router.delete('/favorites', (req, res) => {
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
+    if (err) {
+      res.status(401).set('Content-Type', 'text/plain').send('Unauthorized');
+    } else {
+      let deletedUser;
+      knex('favorites')
+      .select('book_id', 'user_id')
+      .where('book_id', '=', req.body.bookId)
+      .then((user) =>{
+        deletedUser = user;
+      })
+      .catch(() => {
+        res.status(400).send();
+      });
+      knex('favorites')
+      .where('id', '=', req.body.bookId)
+      .del()
+      .then(() =>{
+        res.status(200).send(humps.camelizeKeys(deletedUser[0]));
+      })
+      .catch(() => {
+        res.status(400).send();
+      });
+    }
+  });
+});
 
 module.exports = router;
