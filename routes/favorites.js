@@ -23,6 +23,26 @@ router.get('/favorites', (req, res) => {
       });
     }
   });
-})
+});
 
+router.get('/favorites/check', (req, res) => {
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err) => {
+    if (err) {
+      res.status(401).set('Content-Type', 'text/plain').send('Unauthorized');
+    } else {
+      knex('favorites')
+      .innerJoin('books', 'favorites.book_id', 'books.id')
+      .where('book_id', '=', req.query.bookId)
+      .then((queryResult) => {
+        if (queryResult.length === 0) {
+          res.status(200).send(false);
+        }
+        res.status(200).send(true);
+      })
+      .catch(() => {
+        res.status(500);
+      });
+    }
+  });
+})
 module.exports = router;
