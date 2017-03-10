@@ -4,14 +4,11 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[env];
 const knex = require('knex')(config);
 const bcrypt = require('bcrypt-as-promised');
 const humps = require('humps')
-
-router.use(cookieParser());
 
 router.get('/token', (req, res) => {
   jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {

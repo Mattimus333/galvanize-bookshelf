@@ -45,4 +45,5 @@ router.get('/favorites/check', (req, res) => {
     }
   });
 })
+
 module.exports = router;
