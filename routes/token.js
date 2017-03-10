@@ -17,6 +17,8 @@ router.get('/token', (req, res) => {
   jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
     if (err) {
       res.status(200).json(false);
+    } else {
+      res.status(200).json(true);
     }
   });
 });
@@ -55,4 +57,7 @@ router.post('/token', (req, res) => {
   });
 });
 
+router.delete('/token', (req, res) => {
+  
+})
 module.exports = router;
