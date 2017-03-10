@@ -40,7 +40,7 @@ router.post('/token', (req, res) => {
       res.status(400).send('Bad email or password');
     }
     bcrypt.compare(req.body.password, user[0].hashed_password)
-    .then((resp) => {
+    .then(() => {
       const claim = { userId: user[0].id };
       const token = jwt.sign(claim, process.env.JWT_KEY, {
         expiresIn: '7 days',
@@ -64,9 +64,7 @@ router.post('/token', (req, res) => {
 });
 
 router.delete('/token', (req, res) => {
-  const token = '';
-  res.cookie('token', token);
-  res.status(200).send();
+  res.cookie('token', '').status(200).send();
 });
 
 module.exports = router;
