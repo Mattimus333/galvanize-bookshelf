@@ -52,6 +52,11 @@ app.use(favorites);
 app.use(token);
 app.use(users);
 
+app.use('/', (req, res) => {
+  res.set('Content-Type', 'plain/text');
+  res.status(404).send('Not Found');
+});
+
 // eslint-disable-next-line max-params
 app.use((err, _req, res, _next) => {
   if (err.output && err.output.statusCode) {
