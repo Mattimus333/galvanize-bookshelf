@@ -34,26 +34,27 @@ router.post('/token', (req, res) => {
   .then((user) => {
     if (user.length === 0) {
       res.set('Content-Type', 'text/plain');
-      res.status(400).send('Bad email or password');
+      return res.status(400).send('Bad email or password');
+    } else {
+      bcrypt.compare(req.body.password, user[0].hashed_password)
+      .then(() => {
+        const claim = { userId: user[0].id };
+        const token = jwt.sign(claim, process.env.JWT_KEY, {
+          expiresIn: '7 days',
+        });
+        delete user[0].hashed_password;
+        res.cookie('token', token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+          secure: router.get('env') === 'production',
+        });
+        res.status(200).json(humps.camelizeKeys(user[0]));
+      })
+      .catch(() => {
+        res.set('Content-Type', 'text/plain');
+        return res.status(400).send('Bad email or password');
+      });
     }
-    bcrypt.compare(req.body.password, user[0].hashed_password)
-    .then(() => {
-      const claim = { userId: user[0].id };
-      const token = jwt.sign(claim, process.env.JWT_KEY, {
-        expiresIn: '7 days',
-      });
-      delete user[0].hashed_password;
-      res.cookie('token', token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        secure: router.get('env') === 'production',
-      });
-      res.status(200).json(humps.camelizeKeys(user[0]));
-    })
-    .catch(() => {
-      res.set('Content-Type', 'text/plain');
-      res.status(400).send('Bad email or password');
-    });
   })
   .catch(() => {
     res.status(400);
