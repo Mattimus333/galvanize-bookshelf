@@ -52,6 +52,7 @@ app.use(favorites);
 app.use(token);
 app.use(users);
 
+// send all 404 errors to here!
 app.use('/', (req, res) => {
   res.set('Content-Type', 'plain/text');
   res.status(404).send('Not Found');

@@ -34,7 +34,7 @@ router.post('/token', (req, res) => {
   .then((user) => {
     if (user.length === 0) {
       res.set('Content-Type', 'text/plain');
-      return res.status(400).send('Bad email or password');
+      res.status(400).send('Bad email or password');
     } else {
       bcrypt.compare(req.body.password, user[0].hashed_password)
       .then(() => {
@@ -52,7 +52,7 @@ router.post('/token', (req, res) => {
       })
       .catch(() => {
         res.set('Content-Type', 'text/plain');
-        return res.status(400).send('Bad email or password');
+        res.status(400).send('Bad email or password');
       });
     }
   })
