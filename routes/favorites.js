@@ -49,7 +49,7 @@ router.get('/favorites/check', (req, res) => {
 router.post('/favorites', (req, res) => {
   jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
     if (err) {
-      res.status(401).send('Unauthorized');
+      res.status(401).set('Content-Type', 'text/plain').send('Unauthorized');
     } else {
       const favoriteBook = {
         book_id: req.body.bookId,
@@ -78,7 +78,7 @@ router.delete('/favorites', (req, res) => {
       knex('favorites')
       .select('book_id', 'user_id')
       .where('book_id', '=', req.body.bookId)
-      .then((user) =>{
+      .then((user) => {
         deletedUser = user;
       })
       .catch(() => {
@@ -87,7 +87,7 @@ router.delete('/favorites', (req, res) => {
       knex('favorites')
       .where('id', '=', req.body.bookId)
       .del()
-      .then(() =>{
+      .then(() => {
         res.status(200).send(humps.camelizeKeys(deletedUser[0]));
       })
       .catch(() => {

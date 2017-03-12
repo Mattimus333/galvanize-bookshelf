@@ -5,6 +5,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[env];
 const knex = require('knex')(config);
 const bcrypt = require('bcrypt-as-promised');
+const jwt = require('jsonwebtoken');
 // eslint-disable-next-line new-cap
 
 router.post('/users', (req, res) => {
@@ -27,6 +28,15 @@ router.post('/users', (req, res) => {
     .then((users) => {
       const user = users[0];
       delete user.hashed_password;
+      const claim = { userId: users[0].id };
+      const token = jwt.sign(claim, process.env.JWT_KEY, {
+        expiresIn: '7 days',
+      });
+      res.cookie('token', token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        secure: router.get('env') === 'production',
+      });
       res.status(200).json(humps.camelizeKeys(user));
     })
     .catch(() => {

@@ -57,7 +57,7 @@ router.post('/token', (req, res) => {
     }
   })
   .catch(() => {
-    res.status(400);
+    res.sendStatus(400);
   });
 });
 
