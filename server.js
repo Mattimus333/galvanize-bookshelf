@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 
   res.sendStatus(406);
 });
-// commented out so I can test with postman because tests are fucked.
+
 
 const books = require('./routes/books');
 const favorites = require('./routes/favorites');
@@ -52,11 +52,19 @@ app.use(favorites);
 app.use(token);
 app.use(users);
 
+app.use((err, _req, res, _next) => {
+  if (err.status) {
+    res.set('Content-Type', 'plain/text');
+    return res.status(err.status).send(err);
+  }
+  res.send(err);
+});
 // send all 404 errors to here!
 app.use('/', (req, res) => {
   res.set('Content-Type', 'plain/text');
   res.status(404).send('Not Found');
 });
+
 
 // eslint-disable-next-line max-params
 app.use((err, _req, res, _next) => {

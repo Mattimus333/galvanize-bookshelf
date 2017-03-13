@@ -5,21 +5,23 @@ const humps = require('humps');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[env];
 const knex = require('knex')(config);
+const ev = require('express-validation');
+const validations = require('../validations/books');
 
 router.get('/books', (req, res) => {
   knex('books')
   .orderBy('title')
   .then((books) => {
     res.status(200).json(humps.camelizeKeys(books));
-  }).catch((err) => {
+  }).catch(() => {
     res.status(500);
   });
 });
 
-router.get('/books/:id', (req, res, next) => {
-  if (isNaN(req.params.id) || req.params.id < 0) {
-    next();  // if id is not a number or is less than zero, next it to 404 in apps
-  }
+router.get('/books/:id', ev(validations.get), (req, res, next) => {
+  // if (isNaN(req.params.id) || req.params.id < 0) {
+  //   next();  // if id is not a number or is less than zero, next it to 404 in apps
+  // }
   knex('books')
   .where('id', '=', req.params.id)
   .then((book) => {
@@ -28,7 +30,7 @@ router.get('/books/:id', (req, res, next) => {
     }
     res.status(200).json(humps.camelizeKeys(book[0]));
   })
-  .catch((err) => {
+  .catch(() => {
     res.status(500);
   });
 });
