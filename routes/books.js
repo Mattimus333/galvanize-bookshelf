@@ -28,7 +28,7 @@ router.get('/books/:id', (req, res, next) => {
     }
     res.status(200).json(humps.camelizeKeys(book[0]));
   })
-  .catch((err) => {
+  .catch(() => {
     res.status(500);
   });
 });
