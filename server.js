@@ -67,18 +67,18 @@ app.use('/', (req, res) => {
 
 
 // eslint-disable-next-line max-params
-app.use((err, _req, res, _next) => {
-  if (err.output && err.output.statusCode) {
-    return res
-      .status(err.output.statusCode)
-      .set('Content-Type', 'text/plain')
-      .send(err.message);
-  }
-
-  // eslint-disable-next-line no-console
-  console.error(err.stack);
-  res.sendStatus(500);
-});
+// app.use((err, _req, res, _next) => {
+//   if (err.output && err.output.statusCode) {
+//     return res
+//       .status(err.output.statusCode)
+//       .set('Content-Type', 'text/plain')
+//       .send(err.message);
+//   }
+//
+//   // eslint-disable-next-line no-console
+//   console.error(err.stack);
+//   res.sendStatus(500);
+// });
 
 const port = process.env.PORT || 8000;
 

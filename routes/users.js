@@ -6,16 +6,18 @@ const config = require('../knexfile.js')[env];
 const knex = require('knex')(config);
 const bcrypt = require('bcrypt-as-promised');
 const jwt = require('jsonwebtoken');
+const ev = require('express-validation');
+const validations = require('../validations/users');
 // eslint-disable-next-line new-cap
 
-router.post('/users', (req, res) => {
-  if (req.body.email === undefined) {
-    res.set('Content-Type', 'text/plain');
-    return res.status(400).send('Email must not be blank');
-  } else if (req.body.password === undefined) {
-    res.set('Content-Type', 'text/plain');
-    return res.status(400).send('Password must be at least 8 characters long');
-  }
+router.post('/users', ev(validations.post), (req, res) => {
+  // if (req.body.email === undefined) {
+  //   res.set('Content-Type', 'text/plain');
+  //   return res.status(400).send('Email must not be blank');
+  // } else if (req.body.password === undefined) {
+  //   res.set('Content-Type', 'text/plain');
+  //   return res.status(400).send('Password must be at least 8 characters long');
+  // }
   bcrypt.hash(req.body.password, 12)
   .then((hashed_password) => {
     knex('users')

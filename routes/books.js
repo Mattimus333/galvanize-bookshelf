@@ -35,7 +35,7 @@ router.get('/books/:id', ev(validations.get), (req, res, next) => {
   });
 });
 
-router.post('/books', (req, res) => {
+router.post('/books', ev(validations.post), (req, res) => {
   const book = {
     title: req.body.title,
     author: req.body.author,
@@ -43,16 +43,16 @@ router.post('/books', (req, res) => {
     description: req.body.description,
     cover_url: req.body.coverUrl,
   };
-  for (const property in book) {
-    if (property === 'cover_url' && book[property] === undefined) {
-      res.set('Content-Type', 'plain/text');
-      res.status(400).send(`Cover URL must not be blank`);
-    }
-    else if (book[property] === undefined) {
-      res.set('Content-Type', 'plain/text');
-      res.status(400).send(`${property.charAt(0).toUpperCase() + property.slice(1)} must not be blank`);
-    }
-  }
+  // for (const property in book) {
+  //   if (property === 'cover_url' && book[property] === undefined) {
+  //     res.set('Content-Type', 'plain/text');
+  //     res.status(400).send(`Cover URL must not be blank`);
+  //   }
+  //   else if (book[property] === undefined) {
+  //     res.set('Content-Type', 'plain/text');
+  //     res.status(400).send(`${property.charAt(0).toUpperCase() + property.slice(1)} must not be blank`);
+  //   }
+  // }
   knex('books')
   .insert(book, '*')
   .then((response) => {
@@ -63,10 +63,10 @@ router.post('/books', (req, res) => {
   });
 });
 
-router.patch('/books/:id', (req, res, next) => {
-  if (isNaN(req.params.id) || req.params.id < 0) {
-    next();  // if id is not a number or is less than zero, next it to 404 in apps
-  }
+router.patch('/books/:id', ev(validations.get), (req, res, next) => {
+  // if (isNaN(req.params.id) || req.params.id < 0) {
+  //   next();  // if id is not a number or is less than zero, next it to 404 in apps
+  // }
   const book = {
     title: req.body.title,
     author: req.body.author,
@@ -86,7 +86,7 @@ router.patch('/books/:id', (req, res, next) => {
   });
 });
 
-router.delete('/books/:id', (req, res, next) => {
+router.delete('/books/:id', ev(validations.get), (req, res, next) => {
   if (isNaN(req.params.id) || req.params.id < 0) {
     next();  // if id is not a number or is less than zero, next it to 404 in apps
   }
