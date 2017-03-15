@@ -17,9 +17,6 @@ router.post('/users', (req, res) => {
     res.status(400).send('Password must be at least 8 characters long');
   } else {
     bcrypt.hash(req.body.password, 12)
-    .catch(() => {
-      res.status(413).send();
-    })
     .then((hashed_password) => {
       return knex('users').insert({
         first_name: req.body.firstName,
@@ -42,10 +39,11 @@ router.post('/users', (req, res) => {
       });
       res.status(200).json(humps.camelizeKeys(user));
     })
-    .catch(() => {
+    .catch((err) => {
+      //if error is a brypt error, do A, if it's a knex error, do B, etc.
       res.set('Content-Type', 'text/plain');
       res.status(400).send('Email already exists');
-    })
+    });
   }
 });
 
